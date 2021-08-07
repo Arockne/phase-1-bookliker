@@ -3,30 +3,9 @@ function getBooks() {
   fetch('http://localhost:3000/books')
   .then(resp => resp.json())
   .then(renderBooks);
-  //.then(books => renderBooks(books));
 }
 
-//id
-  //number
-//title
-  //string
-//subtitle
-  //string
-//description
-  //string
-//author
-  //string
-//img_url
-  //string
-//users
-  //array of object
-    //id
-      //number
-    //username
-      //string
-
 function renderBooks(books) {
-  
   books.forEach(book => {
     const li = document.createElement('li');
     li.textContent = book.title;
@@ -43,10 +22,10 @@ function handleBookInfo(book) {
   const img = document.createElement('img');
   img.setAttribute('src', book.img_url);
   
-  const title = document.createElement('h1');
+  const title = document.createElement('h3');
   title.textContent = book.title;
 
-  const subtitle = document.createElement('h2');
+  const subtitle = document.createElement('h3');
   subtitle.textContent = book.subtitle;
 
   const author = document.createElement('h3');
@@ -56,7 +35,6 @@ function handleBookInfo(book) {
   description.textContent = book.description;
 
   const usersLiked = document.createElement('ul');
-  usersLiked.id = book.id;
   book.users.forEach(user => {
     const li = document.createElement('li');
     li.textContent = user.username;
@@ -72,7 +50,7 @@ function handleBookInfo(book) {
 
 function handleUserLike(e, book) {
   const user1 = {"id":1, "username":"pouros"};
-  const likedList = document.getElementById(`${book.id}`)
+  const likedList = document.querySelector('#show-panel').querySelector('ul');
   const userLiked = document.createElement('li');
   userLiked.textContent = user1.username;
   likedList.appendChild(userLiked);
@@ -81,14 +59,13 @@ function handleUserLike(e, book) {
     users: [...book.users, user1]
   }
 
-  fetch(`http://localhost:3000/books/${user1.id}`, {
+  fetch(`http://localhost:3000/books/${book.id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(updatedUserList)
   })
-  .then(resp => console.log(resp))
 }
 
 
